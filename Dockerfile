@@ -1,19 +1,22 @@
-# Use stable OpenJDK 17
-FROM eclipse-temurin:17-jdk
+# Stage 1: Build the project using Maven
+FROM maven:3.9.2-eclipse-temurin-17 AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy Maven project files
+# Copy pom.xml and source code
 COPY pom.xml .
 COPY src ./src
 
-# Install Maven and build project
-RUN apt-get update && apt-get install -y maven
+# Build the project
 RUN mvn clean package -DskipTests
 
-# Copy the built jar
-COPY target/*.jar app.jar
+# Stage 2: Run the Spring Boot JAR
+FROM eclipse-temurin:17-jdk
+
+WORKDIR /app
+
+# Copy the JAR from the build stage
+COPY --from=build /app/target/*.jar app.jar
 
 # Expose port
 EXPOSE 8080
