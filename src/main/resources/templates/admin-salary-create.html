@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Salary</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+
+<h3>Create Salary</h3>
+
+<form th:action="@{/admin/salary/create}" method="post">
+
+    <label>Worker</label>
+    <select name="workerId" class="form-control mb-2" required>
+        <option th:each="w : ${workers}" th:value="${w.workerId}"
+                th:text="${w.workerName}"></option>
+    </select>
+
+    <label>Salary Month</label>
+    <input type="month" name="salaryMonth" class="form-control mb-2" required>
+
+    <label>Base Salary</label>
+    <input type="number" name="baseSalary" class="form-control mb-2" required>
+
+    <label>Overtime Hours</label>
+    <input type="number" step="0.5" name="overtimeHours" class="form-control mb-2">
+
+    <label>Overtime Rate</label>
+    <input type="number" step="0.5" name="overtimeRate" class="form-control mb-3">
+
+    <button type="submit" class="btn btn-success">Save Salary</button>
+    <a href="/admin/salaries" class="btn btn-secondary">Back</a>
+
+</form>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Worker Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; }
+        .section { background-color: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h3 { margin-bottom: 15px; }
+        .badge-status { font-size: 0.85rem; padding: 0.4em 0.7em; }
+    </style>
+</head>
+<body class="container mt-4">
+
+<h2>👷 Worker Details</h2>
+<a href="/admin/workers" class="btn btn-secondary mb-3">⬅ Back to Workers List</a>
+
+<!-- ================= WORKER INFO ================= -->
+<div class="section">
+    <h3>Worker Info</h3>
+    <p><strong>ID:</strong> <span th:text="${worker.workerId}"></span></p>
+    <p><strong>Name:</strong> <span th:text="${worker.workerName}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${worker.workerEmail} ?: 'N/A'"></span></p>
+    <p><strong>Contact:</strong> <span th:text="${worker.contact} ?: 'N/A'"></span></p>
+    <p><strong>Address:</strong> <span th:text="${worker.address} ?: 'N/A'"></span></p>
+</div>
+
+<!-- ================= TRIP HISTORY ================= -->
+<div class="section">
+    <h3>Trip History</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Vehicle</th>
+                    <th>Material</th>
+                    <th>Qty</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>KM</th>
+                    <th>Diesel</th>
+                    <th>Income</th>
+                    <th>Remarks</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="t : ${trips}">
+                    <td th:text="${#temporals.format(t.tripDate, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${t.vehicleNo}"></td>
+            <td th:text="${t.materialType}"></td>
+            <td th:text="${t.materialQuantity}"></td>
+            <td th:text="${t.fromLocation}"></td>
+            <td th:text="${t.toLocation}"></td>
+                    <td th:text="${t.distanceKm}"></td>
+                    <td th:text="${t.dieselUsed}"></td>
+                    <td th:text="${t.tripIncome}"></td>
+                    <td th:text="${t.remarks}"></td>
+                  
+                </tr>
+                <tr th:if="${#lists.isEmpty(trips)}">
+                    <td colspan="3" class="text-center text-danger">No trips found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ================= ATTENDANCE RECORDS ================= -->
+<div class="section">
+    <h3>Attendance Records</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+            
+                <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="a : ${attendanceList}">
+                    <td th:text="${#temporals.format(a.attendanceDate, 'dd-MM-yyyy')}"></td>
+                    <td>
+                        <span th:text="${a.status}"
+                              th:classappend="${a.status == 'Present'} ? 'badge bg-success badge-status' : 'badge bg-danger badge-status'"></span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(attendanceList)}">
+                    <td colspan="2" class="text-center text-danger">No attendance records found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ================= SALARY HISTORY ================= -->
+<div class="section">
+    <h3>Salary History</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Month</th>
+                    <th>Base Salary</th>
+                    <th>OT Hours</th>
+                    <th>OT Rate</th>
+                    <th>OT Pay</th>
+                    <th>Advance</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="s : ${salaryList}">
+                    <td th:text="${s.salaryMonth}"></td>
+                    <td th:text="${s.baseSalary}"></td>
+                    <td th:text="${s.overtimeHours}"></td>
+                    <td th:text="${s.overtimeRate}"></td>
+                    <td th:text="${s.overtimePay}"></td>
+                    <td th:text="${s.advance}"></td>
+                    <td th:text="${s.amount}"></td>
+                    <td>
+                        <span th:text="${s.status}" 
+                              th:classappend="${s.status == 'Paid'} ? 'badge bg-success badge-status' : 'badge bg-warning badge-status'"></span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(salaryList)}">
+                    <td colspan="8" class="text-center text-danger">No salary records found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

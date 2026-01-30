@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Trip</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+
+<h3>Edit Trip</h3>
+
+<form th:action="@{/worker/trip/update}" th:object="${trip}" method="post" class="row g-3">
+    <input type="hidden" th:field="*{tripId}"/>
+    
+    <div class="col-md-4">
+        <label>Vehicle No</label>
+        <input type="text" th:field="*{vehicleNo}" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+        <label>Material Type</label>
+        <input type="text" th:field="*{materialType}" class="form-control">
+    </div>
+    <div class="col-md-4">
+        <label>Material Quantity</label>
+        <input type="number" step="0.01" th:field="*{materialQuantity}" class="form-control">
+    </div>
+    <div class="col-md-6">
+        <label>From</label>
+        <input type="text" th:field="*{fromLocation}" class="form-control">
+    </div>
+    <div class="col-md-6">
+        <label>To</label>
+        <input type="text" th:field="*{toLocation}" class="form-control">
+    </div>
+    <div class="col-md-4">
+        <label>Distance (KM)</label>
+        <input type="number" step="0.01" th:field="*{distanceKm}" class="form-control">
+    </div>
+    <div class="col-md-4">
+        <label>Diesel Used</label>
+        <input type="number" step="0.01" th:field="*{dieselUsed}" class="form-control">
+    </div>
+    <div class="col-md-4">
+        <label>Trip Income</label>
+        <input type="number" step="0.01" th:field="*{tripIncome}" class="form-control">
+    </div>
+    <div class="col-md-8">
+        <label>Remarks</label>
+        <input type="text" th:field="*{remarks}" class="form-control">
+    </div>
+
+    <div class="col-12">
+        <button class="btn btn-success">Update Trip</button>
+        <a href="/worker/triphistory" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+</body>
+</html>

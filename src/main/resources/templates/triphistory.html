@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trip History</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+
+<h3 class="mb-4">🚚 My Trip History</h3>
+
+<!-- Back to Worker Dashboard -->
+<a th:href="@{/worker/dashboard}" class="btn btn-secondary mb-3">⬅ Back</a>
+
+<!-- Filter Trips by Date -->
+<form method="get" class="row g-3 mb-3 align-items-end">
+    <div class="col-md-3">
+        <label for="startDate" class="form-label"><strong>Start Date</strong></label>
+        <input type="date" id="startDate" name="startDate" th:value="${startDate}" class="form-control">
+    </div>
+    <div class="col-md-3">
+        <label for="endDate" class="form-label"><strong>End Date</strong></label>
+        <input type="date" id="endDate" name="endDate" th:value="${endDate}" class="form-control">
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100">Filter</button>
+    </div>
+</form>
+
+
+<!-- Total Summary -->
+<div class="mb-3">
+    <strong>Total Distance:</strong> <span th:text="${#numbers.formatDecimal(totalDistance, 1, 2)}">0.00</span> KM |
+    <strong>Total Income:</strong> Rs.<span th:text="${#numbers.formatDecimal(totalIncome, 1, 2)}">0.00</span>
+</div>
+
+<!-- Trip Table -->
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Vehicle</th>
+            <th>Material</th>
+            <th>Qty</th>
+            <th>From</th>
+            <th>To</th>
+            <th>KM</th>
+            <th>Diesel</th>
+            <th>Income</th>
+            <th>Remarks</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Trip Rows -->
+        <tr th:each="t : ${trips}">
+            <td th:text="${#temporals.format(t.tripDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${t.vehicleNo}"></td>
+            <td th:text="${t.materialType}"></td>
+            <td th:text="${t.materialQuantity}"></td>
+            <td th:text="${t.fromLocation}"></td>
+            <td th:text="${t.toLocation}"></td>
+            <td th:text="${#numbers.formatDecimal(t.distanceKm, 1, 2)}"></td>
+            <td th:text="${#numbers.formatDecimal(t.dieselUsed, 1, 2)}"></td>
+            <td th:text="${#numbers.formatDecimal(t.tripIncome, 1, 2)}"></td>
+            <td th:text="${t.remarks}"></td>
+            <td>
+                <a th:href="@{/worker/trip/edit/{id}(id=${t.tripId})}" class="btn btn-sm btn-warning mb-1">Edit</a>
+                <a th:href="@{/worker/trip/delete/{id}(id=${t.tripId})}" class="btn btn-sm btn-danger mb-1"
+                   onclick="return confirm('Are you sure you want to delete this trip?')">Delete</a>
+            </td>
+        </tr>
+
+        <!-- No Trips Found -->
+        <tr th:if="${#lists.isEmpty(trips)}">
+            <td colspan="11" class="text-center text-danger">
+                No trips found
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Workers List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; }
+        .table-container { background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h2 { margin-bottom: 20px; }
+    </style>
+</head>
+<body class="container mt-4">
+
+<h2>👷 Workers List</h2>
+<a href="/admin/admin-dashboard" class="btn btn-secondary mb-3">⬅ Back to Dashboard</a>
+
+<div class="table-container">
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="w : ${workers}">
+                <td th:text="${w.workerId}"></td>
+                <td th:text="${w.workerName}"></td>
+                <td th:text="${w.workerEmail}"></td>
+                <td th:text="${w.contact}"></td>
+                <td th:text="${w.address}"></td>
+                <td>
+                    <a th:href="@{'/admin/worker/' + ${w.workerId}}" class="btn btn-info btn-sm">View Details</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(workers)}">
+                <td colspan="6" class="text-center text-danger">No workers found</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

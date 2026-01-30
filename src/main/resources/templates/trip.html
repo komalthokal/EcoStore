@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add/Edit Trip</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+
+<h2>👷‍♂️ Welcome, <span th:text="${workerName}">Worker Name</span></h2>
+<h3 th:text="${trip.tripId != null} ? 'Edit Trip Details' : 'Add Trip Details'">Add Trip Details</h3>
+
+<a th:href="@{/worker/triphistory}" class="btn btn-secondary mb-3">⬅ Back to History</a>
+
+<form th:object="${trip}" method="post"
+      th:action="${trip.tripId != null} ? @{/worker/trip/update} : @{/worker/saveTrip}"
+      class="row g-3">
+
+
+    <input type="hidden" th:field="*{tripId}"/>
+
+    <div class="col-md-4">
+        <label>Vehicle No</label>
+        <input type="text" th:field="*{vehicleNo}" class="form-control" required>
+    </div>
+
+    <div class="col-md-4">
+        <label>Material Type</label>
+        <input type="text" th:field="*{materialType}" class="form-control" required>
+    </div>
+
+    <div class="col-md-4">
+        <label>Material Quantity</label>
+        <input type="number" step="0.01" th:field="*{materialQuantity}" class="form-control" required>
+    </div>
+
+    <div class="col-md-6">
+        <label>From Location</label>
+        <input type="text" th:field="*{fromLocation}" class="form-control" required>
+    </div>
+
+    <div class="col-md-6">
+        <label>To Location</label>
+        <input type="text" th:field="*{toLocation}" class="form-control" required>
+    </div>
+
+    <div class="col-md-4">
+        <label>Distance (KM)</label>
+        <input type="number" step="0.01" th:field="*{distanceKm}" class="form-control" required>
+    </div>
+
+    <div class="col-md-4">
+        <label>Diesel Used (L)</label>
+        <input type="number" step="0.01" th:field="*{dieselUsed}" class="form-control" required>
+    </div>
+
+    <div class="col-md-4">
+        <label>Diesel Cost (Rs.)</label>
+        <input type="number" step="0.01" th:field="*{dieselCost}" class="form-control" required>
+    </div>
+
+    <div class="col-md-4">
+        <label>Trip Income (Rs.)</label>
+        <input type="number" step="0.01" th:field="*{tripIncome}" class="form-control" required>
+    </div>
+
+    <div class="col-md-8">
+        <label>Remarks</label>
+        <input type="text" th:field="*{remarks}" class="form-control">
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary"
+                th:text="${trip.tripId != null} ? 'Update Trip' : 'Save Trip'">Save Trip</button>
+    </div>
+
+</form>
+
+</body>
+</html>
