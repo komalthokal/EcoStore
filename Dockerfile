@@ -1,19 +1,18 @@
-# Use OpenJDK 17 as base image
-FROM openjdk:17
+# Use stable OpenJDK 17
+FROM eclipse-temurin:17-jdk
 
-
-# Set working directory inside container
+# Set working directory
 WORKDIR /app
 
 # Copy Maven project files
 COPY pom.xml .
 COPY src ./src
 
-# Build the project
+# Install Maven and build project
 RUN apt-get update && apt-get install -y maven
 RUN mvn clean package -DskipTests
 
-# Copy the jar file
+# Copy the built jar
 COPY target/*.jar app.jar
 
 # Expose port
