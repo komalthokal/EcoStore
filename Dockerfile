@@ -1,18 +1,29 @@
-# -------- BUILD STAGE --------
+# ---------- BUILD STAGE ----------
 FROM eclipse-temurin:17-jdk AS build
+
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH=$JAVA_HOME/bin:$PATH
 
 WORKDIR /app
 
-COPY pom.xml .
+# Copy Maven wrapper first (for caching)
 COPY mvnw .
 COPY .mvn .mvn
+COPY pom.xml .
+
 RUN chmod +x mvnw
+RUN ./mvnw -v
+
+# Download dependencies only
 RUN ./mvnw dependency:go-offline
 
+# Copy source code
 COPY src src
+
+# Build application
 RUN ./mvnw clean package -DskipTests
 
-# -------- RUN STAGE --------
+# ---------- RUNTIME STAGE ----------
 FROM eclipse-temurin:17-jre
 
 WORKDIR /app
