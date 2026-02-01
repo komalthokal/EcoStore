@@ -83,7 +83,7 @@ public class AdminController {
     }
 
 
-
+ 
     // ===== VIEW SALARIES =====
     @GetMapping("/salaries")
     public String viewSalaries(Model model) {
